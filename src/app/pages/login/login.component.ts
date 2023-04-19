@@ -42,12 +42,22 @@ export class LoginComponent {
     this.loginService.generateToken(this.loginData).subscribe(
       (data: any) => {
         this.loginService.loginUser(data.token);
-        console.log(data);
         this.loginService.getCurrentUser().subscribe((user : any) => {
-          console.log(user);
+          this.loginService.setUser(user);
+          if (this.loginService.getUserRole() == "ADMIN") {
+            window.location.href = 'admin';
+          } else if (this.loginService.getUserRole() == "NORMAL") {
+            window.location.href = 'user-dashboard';
+          } else {
+            this.loginService.logout();
+          }
         });
       }, (error) => {
-        console.log(error);
+        this.snack.open('Detalles invalidos, vuelva a intentarlo', 'Aceptar'), {
+          duration : 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
+        }
       }
     )
   }

@@ -7,12 +7,12 @@ import baseUrl from './helper';
 })
 export class LoginService {
 
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   /**
    * generar token
    */
-  public generateToken(loginData : any) {
+  public generateToken(loginData: any) {
     return this.http.post(`${baseUrl}/generate-token`, loginData)
   }
 
@@ -20,7 +20,7 @@ export class LoginService {
    * Iniciar session
    * Almacenar token en localStorage
    */
-  public loginUser(token : any) {
+  public loginUser(token: any) {
     localStorage.setItem('token', token);
   }
 
@@ -56,7 +56,7 @@ export class LoginService {
   /**
    * setUser
    */
-  public setUser(user : any) {
+  public setUser(user: any) {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -75,15 +75,19 @@ export class LoginService {
   /**
    * getUserRole
    */
-  public getUserRole() {
+  getUserRole() {
     let user = this.getUser();
-    return user.authorities[0].authority;
+    if (user.authorities.length > 0) {
+      console.log("user ", user);
+      return user.authorities[0].authority;
+    }
+    return null;
   }
 
   /**
    * getCurrentUser
    */
-  public getCurrentUser() {
+  getCurrentUser() {
     return this.http.get(`${baseUrl}/actual-user`);
   }
 }
