@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import baseUrl from './helper';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+
+  public loginStatusSubject = new Subject<Boolean>();
 
   constructor(private http: HttpClient) { }
 
@@ -78,7 +81,6 @@ export class LoginService {
   getUserRole() {
     let user = this.getUser();
     if (user.authorities.length > 0) {
-      console.log("user ", user);
       return user.authorities[0].authority;
     }
     return null;
